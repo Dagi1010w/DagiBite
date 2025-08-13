@@ -64,5 +64,6 @@ RUN rm /etc/nginx/sites-enabled/default
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
-CMD php artisan storage:link && php artisan serve --host=0.0.0.0 --port=80
+CMD php artisan storage:link && php artisan serve --host=0.0.0.0 --port=${PORT}
+
 
