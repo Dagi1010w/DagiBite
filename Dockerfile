@@ -63,12 +63,6 @@ RUN rm -rf public/storage && mkdir -p /var/www/storage \
 RUN rm /etc/nginx/sites-enabled/default
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose HTTP port
 EXPOSE 80
+CMD php artisan storage:link && php artisan serve --host=0.0.0.0 --port=80
 
-# Start Nginx & PHP-FPM together
-CMD php artisan storage:link && \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    service nginx start && \
-    php-fpm
