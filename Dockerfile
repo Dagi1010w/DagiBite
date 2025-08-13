@@ -5,8 +5,8 @@ WORKDIR /app
 # Copy composer files first for caching
 COPY composer.json composer.lock ./
 
-# Install PHP dependencies using cache mount
-RUN --mount=type=cache,id=composer-cache,target=/tmp/cache \
+# Install PHP dependencies using cache # Composer dependencies with proper Railway cache ID
+RUN --mount=type=cache,id=cache-composer,target=/tmp/cache \
     COMPOSER_CACHE_DIR=/tmp/cache \
     composer install --prefer-dist --no-interaction --no-dev --optimize-autoloader
 
@@ -21,7 +21,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install Node dependencies using cache mount
-RUN --mount=type=cache,id=npm-cache,target=/root/.npm \
+# NPM dependencies with proper Railway cache ID
+RUN --mount=type=cache,id=cache-npm,target=/root/.npm \
     npm install
 
 # Copy the rest of the frontend code
