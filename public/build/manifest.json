@@ -3,8 +3,8 @@
     "file": "assets/AuthenticatedLayout-BV0Nj78M.css",
     "src": "_AuthenticatedLayout-BV0Nj78M.css"
   },
-  "_AuthenticatedLayout-BnSuEXTT.js": {
-    "file": "assets/AuthenticatedLayout-BnSuEXTT.js",
+  "_AuthenticatedLayout-BgJ9mxZe.js": {
+    "file": "assets/AuthenticatedLayout-BgJ9mxZe.js",
     "name": "AuthenticatedLayout",
     "imports": [
       "resources/js/app.js",
@@ -18,24 +18,24 @@
     "file": "assets/Contact-NbXVtUxG.css",
     "src": "_Contact-NbXVtUxG.css"
   },
-  "_GuestLayout-CigZoGxZ.js": {
-    "file": "assets/GuestLayout-CigZoGxZ.js",
+  "_GuestLayout-DZtTrKq0.js": {
+    "file": "assets/GuestLayout-DZtTrKq0.js",
     "name": "GuestLayout",
     "imports": [
       "__plugin-vue_export-helper-DlAUqK2U.js",
       "resources/js/app.js"
     ]
   },
-  "_PrimaryButton-C0g3KqAE.js": {
-    "file": "assets/PrimaryButton-C0g3KqAE.js",
+  "_PrimaryButton-DLHnCNZJ.js": {
+    "file": "assets/PrimaryButton-DLHnCNZJ.js",
     "name": "PrimaryButton",
     "imports": [
       "__plugin-vue_export-helper-DlAUqK2U.js",
       "resources/js/app.js"
     ]
   },
-  "_TextInput-DWWAsfgk.js": {
-    "file": "assets/TextInput-DWWAsfgk.js",
+  "_TextInput-B4sS4qFZ.js": {
+    "file": "assets/TextInput-B4sS4qFZ.js",
     "name": "TextInput",
     "imports": [
       "resources/js/app.js"
@@ -50,41 +50,41 @@
     "name": "index"
   },
   "resources/js/Pages/Auth/ConfirmPassword.vue": {
-    "file": "assets/ConfirmPassword-Bj7VJ-oL.js",
+    "file": "assets/ConfirmPassword-CneUHI8o.js",
     "name": "ConfirmPassword",
     "src": "resources/js/Pages/Auth/ConfirmPassword.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout-CigZoGxZ.js",
-      "_TextInput-DWWAsfgk.js",
-      "_PrimaryButton-C0g3KqAE.js",
+      "_GuestLayout-DZtTrKq0.js",
+      "_TextInput-B4sS4qFZ.js",
+      "_PrimaryButton-DLHnCNZJ.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ]
   },
   "resources/js/Pages/Auth/ForgotPassword.vue": {
-    "file": "assets/ForgotPassword-CKORsEru.js",
+    "file": "assets/ForgotPassword-D53lq9en.js",
     "name": "ForgotPassword",
     "src": "resources/js/Pages/Auth/ForgotPassword.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout-CigZoGxZ.js",
-      "_TextInput-DWWAsfgk.js",
-      "_PrimaryButton-C0g3KqAE.js",
+      "_GuestLayout-DZtTrKq0.js",
+      "_TextInput-B4sS4qFZ.js",
+      "_PrimaryButton-DLHnCNZJ.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ]
   },
   "resources/js/Pages/Auth/Login.vue": {
-    "file": "assets/Login-Bo5fpUne.js",
+    "file": "assets/Login-CLm-sifc.js",
     "name": "Login",
     "src": "resources/js/Pages/Auth/Login.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout-CigZoGxZ.js",
-      "_TextInput-DWWAsfgk.js",
-      "_PrimaryButton-C0g3KqAE.js",
+      "_GuestLayout-DZtTrKq0.js",
+      "_TextInput-B4sS4qFZ.js",
+      "_PrimaryButton-DLHnCNZJ.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
     "css": [
@@ -92,15 +92,15 @@
     ]
   },
   "resources/js/Pages/Auth/Register.vue": {
-    "file": "assets/Register-DZig_AK7.js",
+    "file": "assets/Register-Yr3uhQXL.js",
     "name": "Register",
     "src": "resources/js/Pages/Auth/Register.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout-CigZoGxZ.js",
-      "_TextInput-DWWAsfgk.js",
-      "_PrimaryButton-C0g3KqAE.js",
+      "_GuestLayout-DZtTrKq0.js",
+      "_TextInput-B4sS4qFZ.js",
+      "_PrimaryButton-DLHnCNZJ.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
     "css": [
@@ -108,38 +108,38 @@
     ]
   },
   "resources/js/Pages/Auth/ResetPassword.vue": {
-    "file": "assets/ResetPassword-CmHQAmYq.js",
+    "file": "assets/ResetPassword-Bq2Z6gAJ.js",
     "name": "ResetPassword",
     "src": "resources/js/Pages/Auth/ResetPassword.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout-CigZoGxZ.js",
-      "_TextInput-DWWAsfgk.js",
-      "_PrimaryButton-C0g3KqAE.js",
+      "_GuestLayout-DZtTrKq0.js",
+      "_TextInput-B4sS4qFZ.js",
+      "_PrimaryButton-DLHnCNZJ.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ]
   },
   "resources/js/Pages/Auth/VerifyEmail.vue": {
-    "file": "assets/VerifyEmail-DT6JNiC5.js",
+    "file": "assets/VerifyEmail-BudhUA8k.js",
     "name": "VerifyEmail",
     "src": "resources/js/Pages/Auth/VerifyEmail.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_GuestLayout-CigZoGxZ.js",
-      "_PrimaryButton-C0g3KqAE.js",
+      "_GuestLayout-DZtTrKq0.js",
+      "_PrimaryButton-DLHnCNZJ.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ]
   },
   "resources/js/Pages/Comp/About.vue": {
-    "file": "assets/About-d_wIHZLs.js",
+    "file": "assets/About-Bd4kafW5.js",
     "name": "About",
     "src": "resources/js/Pages/Comp/About.vue",
     "isDynamicEntry": true,
     "imports": [
       "_index-CH_iu5NA.js",
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Comp/Contact.vue",
       "__plugin-vue_export-helper-DlAUqK2U.js",
       "resources/js/app.js"
@@ -151,7 +151,7 @@
     ]
   },
   "resources/js/Pages/Comp/Contact.vue": {
-    "file": "assets/Contact-BJVm6Zk7.js",
+    "file": "assets/Contact-BVu3hqhK.js",
     "name": "Contact",
     "src": "resources/js/Pages/Comp/Contact.vue",
     "isDynamicEntry": true,
@@ -164,14 +164,14 @@
     ]
   },
   "resources/js/Pages/Comp/Contactus.vue": {
-    "file": "assets/Contactus-DP0Ee4if.js",
+    "file": "assets/Contactus-DRgTZSAu.js",
     "name": "Contactus",
     "src": "resources/js/Pages/Comp/Contactus.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
       "_index-CH_iu5NA.js",
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Comp/Contact.vue",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
@@ -182,12 +182,12 @@
     ]
   },
   "resources/js/Pages/Customer.vue": {
-    "file": "assets/Customer-CwACLMHT.js",
+    "file": "assets/Customer-B4kLjaKP.js",
     "name": "Customer",
     "src": "resources/js/Pages/Customer.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/app.js",
       "resources/js/Pages/Customer/Chome.vue",
       "resources/js/Pages/Customer/RestaurantMenuList.vue",
@@ -203,12 +203,12 @@
     ]
   },
   "resources/js/Pages/Customer/Cart.vue": {
-    "file": "assets/Cart-B3Lu8uN5.js",
+    "file": "assets/Cart-BpqsAumd.js",
     "name": "Cart",
     "src": "resources/js/Pages/Customer/Cart.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "__plugin-vue_export-helper-DlAUqK2U.js",
       "resources/js/app.js"
     ],
@@ -218,7 +218,7 @@
     ]
   },
   "resources/js/Pages/Customer/Chome.vue": {
-    "file": "assets/Chome-DfpkIY_c.js",
+    "file": "assets/Chome-DbqphWaN.js",
     "name": "Chome",
     "src": "resources/js/Pages/Customer/Chome.vue",
     "isDynamicEntry": true,
@@ -227,7 +227,7 @@
     ]
   },
   "resources/js/Pages/Customer/Components/MenuCard.vue": {
-    "file": "assets/MenuCard-IXrKlgZf.js",
+    "file": "assets/MenuCard-DGrecA5a.js",
     "name": "MenuCard",
     "src": "resources/js/Pages/Customer/Components/MenuCard.vue",
     "isDynamicEntry": true,
@@ -236,7 +236,7 @@
     ]
   },
   "resources/js/Pages/Customer/Components/RestaurantCard.vue": {
-    "file": "assets/RestaurantCard-BpXy_Hqv.js",
+    "file": "assets/RestaurantCard-DoF5PnU8.js",
     "name": "RestaurantCard",
     "src": "resources/js/Pages/Customer/Components/RestaurantCard.vue",
     "isDynamicEntry": true,
@@ -245,13 +245,13 @@
     ]
   },
   "resources/js/Pages/Customer/Menu.vue": {
-    "file": "assets/Menu-DmnsI3jQ.js",
+    "file": "assets/Menu-DlCPFBrI.js",
     "name": "Menu",
     "src": "resources/js/Pages/Customer/Menu.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
     "css": [
@@ -260,13 +260,13 @@
     ]
   },
   "resources/js/Pages/Customer/RestaurantList.vue": {
-    "file": "assets/RestaurantList-waHRX3vt.js",
+    "file": "assets/RestaurantList-CJ3gDVVG.js",
     "name": "RestaurantList",
     "src": "resources/js/Pages/Customer/RestaurantList.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Comp/Contact.vue",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
@@ -276,7 +276,7 @@
     ]
   },
   "resources/js/Pages/Customer/RestaurantMenuList.vue": {
-    "file": "assets/RestaurantMenuList-D4Ya8bvi.js",
+    "file": "assets/RestaurantMenuList-B_BsPxDz.js",
     "name": "RestaurantMenuList",
     "src": "resources/js/Pages/Customer/RestaurantMenuList.vue",
     "isDynamicEntry": true,
@@ -291,7 +291,7 @@
     ]
   },
   "resources/js/Pages/Customer/Testimonial.vue": {
-    "file": "assets/Testimonial-BKssH_21.js",
+    "file": "assets/Testimonial-25jEVTqV.js",
     "name": "Testimonial",
     "src": "resources/js/Pages/Customer/Testimonial.vue",
     "isDynamicEntry": true,
@@ -300,12 +300,12 @@
     ]
   },
   "resources/js/Pages/Customer/View.vue": {
-    "file": "assets/View-Bp3NMIGK.js",
+    "file": "assets/View-C907Pi3W.js",
     "name": "View",
     "src": "resources/js/Pages/Customer/View.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/app.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
@@ -314,7 +314,7 @@
     ]
   },
   "resources/js/Pages/Customer/Why.vue": {
-    "file": "assets/Why-BEoORZNg.js",
+    "file": "assets/Why-3dJqcDVa.js",
     "name": "Why",
     "src": "resources/js/Pages/Customer/Why.vue",
     "isDynamicEntry": true,
@@ -323,66 +323,66 @@
     ]
   },
   "resources/js/Pages/Profile/Edit.vue": {
-    "file": "assets/Edit-D-bhWzze.js",
+    "file": "assets/Edit-CRRJXFKO.js",
     "name": "Edit",
     "src": "resources/js/Pages/Profile/Edit.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Profile/Partials/DeleteUserForm.vue",
       "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue",
       "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue",
       "resources/js/app.js",
       "__plugin-vue_export-helper-DlAUqK2U.js",
-      "_TextInput-DWWAsfgk.js",
-      "_PrimaryButton-C0g3KqAE.js"
+      "_TextInput-B4sS4qFZ.js",
+      "_PrimaryButton-DLHnCNZJ.js"
     ],
     "css": [
       "assets/AuthenticatedLayout-BV0Nj78M.css"
     ]
   },
   "resources/js/Pages/Profile/Partials/DeleteUserForm.vue": {
-    "file": "assets/DeleteUserForm-D2kZ9cUo.js",
+    "file": "assets/DeleteUserForm-DMtZiOr5.js",
     "name": "DeleteUserForm",
     "src": "resources/js/Pages/Profile/Partials/DeleteUserForm.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
       "__plugin-vue_export-helper-DlAUqK2U.js",
-      "_TextInput-DWWAsfgk.js"
+      "_TextInput-B4sS4qFZ.js"
     ]
   },
   "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue": {
-    "file": "assets/UpdatePasswordForm-_0VmoNQU.js",
+    "file": "assets/UpdatePasswordForm-DOionoR2.js",
     "name": "UpdatePasswordForm",
     "src": "resources/js/Pages/Profile/Partials/UpdatePasswordForm.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_TextInput-DWWAsfgk.js",
-      "_PrimaryButton-C0g3KqAE.js",
+      "_TextInput-B4sS4qFZ.js",
+      "_PrimaryButton-DLHnCNZJ.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ]
   },
   "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue": {
-    "file": "assets/UpdateProfileInformationForm-CGwQhfqS.js",
+    "file": "assets/UpdateProfileInformationForm-Bu6jqENT.js",
     "name": "UpdateProfileInformationForm",
     "src": "resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_TextInput-DWWAsfgk.js",
-      "_PrimaryButton-C0g3KqAE.js",
+      "_TextInput-B4sS4qFZ.js",
+      "_PrimaryButton-DLHnCNZJ.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ]
   },
   "resources/js/Pages/Restaurant.vue": {
-    "file": "assets/Restaurant-Rqp6ZJK6.js",
+    "file": "assets/Restaurant-jX3Wzy_P.js",
     "name": "Restaurant",
     "src": "resources/js/Pages/Restaurant.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/app.js",
       "resources/js/Pages/Restaurant/RestaurantHome.vue",
       "__plugin-vue_export-helper-DlAUqK2U.js",
@@ -396,13 +396,13 @@
     ]
   },
   "resources/js/Pages/Restaurant/Addrestaurant.vue": {
-    "file": "assets/Addrestaurant-Cg2q3zh-.js",
+    "file": "assets/Addrestaurant-CdA8kD3b.js",
     "name": "Addrestaurant",
     "src": "resources/js/Pages/Restaurant/Addrestaurant.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
     "css": [
@@ -411,12 +411,12 @@
     ]
   },
   "resources/js/Pages/Restaurant/Customers.vue": {
-    "file": "assets/Customers-D5MAeKeI.js",
+    "file": "assets/Customers-BDqabC2t.js",
     "name": "Customers",
     "src": "resources/js/Pages/Restaurant/Customers.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Restaurant/SideBar.vue",
       "__plugin-vue_export-helper-DlAUqK2U.js",
       "resources/js/app.js"
@@ -427,13 +427,13 @@
     ]
   },
   "resources/js/Pages/Restaurant/Edit.vue": {
-    "file": "assets/Edit-Dx8jAUz8.js",
+    "file": "assets/Edit-BZBveCJ4.js",
     "name": "Edit",
     "src": "resources/js/Pages/Restaurant/Edit.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Restaurant/SideBar.vue",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
@@ -442,13 +442,13 @@
     ]
   },
   "resources/js/Pages/Restaurant/EditRestaurant.vue": {
-    "file": "assets/EditRestaurant-DQSbXlLn.js",
+    "file": "assets/EditRestaurant-CW8Jkt-y.js",
     "name": "EditRestaurant",
     "src": "resources/js/Pages/Restaurant/EditRestaurant.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
     "css": [
@@ -457,13 +457,13 @@
     ]
   },
   "resources/js/Pages/Restaurant/MenuForm.vue": {
-    "file": "assets/MenuForm-DqHKOQ-Q.js",
+    "file": "assets/MenuForm-D7WIH_bV.js",
     "name": "MenuForm",
     "src": "resources/js/Pages/Restaurant/MenuForm.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Comp/Contact.vue",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
@@ -473,12 +473,12 @@
     ]
   },
   "resources/js/Pages/Restaurant/Report.vue": {
-    "file": "assets/Report-DBhAO2HX.js",
+    "file": "assets/Report-CJ1mw1Fp.js",
     "name": "Report",
     "src": "resources/js/Pages/Restaurant/Report.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Restaurant/SideBar.vue",
       "__plugin-vue_export-helper-DlAUqK2U.js",
       "resources/js/app.js"
@@ -489,7 +489,7 @@
     ]
   },
   "resources/js/Pages/Restaurant/RestaurantHome.vue": {
-    "file": "assets/RestaurantHome-DJYqme9L.js",
+    "file": "assets/RestaurantHome-0fdsUfjj.js",
     "name": "RestaurantHome",
     "src": "resources/js/Pages/Restaurant/RestaurantHome.vue",
     "isDynamicEntry": true,
@@ -497,7 +497,7 @@
       "resources/js/Pages/Comp/About.vue",
       "resources/js/app.js",
       "_index-CH_iu5NA.js",
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "__plugin-vue_export-helper-DlAUqK2U.js",
       "resources/js/Pages/Comp/Contact.vue"
     ],
@@ -507,13 +507,13 @@
     ]
   },
   "resources/js/Pages/Restaurant/Restaurantmenus.vue": {
-    "file": "assets/Restaurantmenus-DEzBRd7F.js",
+    "file": "assets/Restaurantmenus-JdQWdemI.js",
     "name": "Restaurantmenus",
     "src": "resources/js/Pages/Restaurant/Restaurantmenus.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Restaurant/SideBar.vue",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
@@ -522,13 +522,13 @@
     ]
   },
   "resources/js/Pages/Restaurant/Rhome.vue": {
-    "file": "assets/Rhome-CTiT-i3e.js",
+    "file": "assets/Rhome-BPwYiY6U.js",
     "name": "Rhome",
     "src": "resources/js/Pages/Restaurant/Rhome.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Restaurant/SideBar.vue",
       "__plugin-vue_export-helper-DlAUqK2U.js"
     ],
@@ -538,12 +538,12 @@
     ]
   },
   "resources/js/Pages/Restaurant/Setting.vue": {
-    "file": "assets/Setting-BscCHgEg.js",
+    "file": "assets/Setting-8WVgwAwl.js",
     "name": "Setting",
     "src": "resources/js/Pages/Restaurant/Setting.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Restaurant/SideBar.vue",
       "resources/js/app.js",
       "__plugin-vue_export-helper-DlAUqK2U.js"
@@ -554,7 +554,7 @@
     ]
   },
   "resources/js/Pages/Restaurant/SideBar.vue": {
-    "file": "assets/SideBar-B9ugW0BE.js",
+    "file": "assets/SideBar-DF2dS60u.js",
     "name": "SideBar",
     "src": "resources/js/Pages/Restaurant/SideBar.vue",
     "isDynamicEntry": true,
@@ -563,12 +563,12 @@
     ]
   },
   "resources/js/Pages/Restaurant/Staff.vue": {
-    "file": "assets/Staff-BDg1tkbJ.js",
+    "file": "assets/Staff-DdYc3uuE.js",
     "name": "Staff",
     "src": "resources/js/Pages/Restaurant/Staff.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_AuthenticatedLayout-BnSuEXTT.js",
+      "_AuthenticatedLayout-BgJ9mxZe.js",
       "resources/js/Pages/Restaurant/SideBar.vue",
       "__plugin-vue_export-helper-DlAUqK2U.js",
       "resources/js/app.js"
@@ -579,7 +579,7 @@
     ]
   },
   "resources/js/Pages/Welcome.vue": {
-    "file": "assets/Welcome-OZnlej_p.js",
+    "file": "assets/Welcome-C-0qFkRf.js",
     "name": "Welcome",
     "src": "resources/js/Pages/Welcome.vue",
     "isDynamicEntry": true,
@@ -594,7 +594,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-DiE7L2kM.js",
+    "file": "assets/app-Coxk4wXF.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -639,7 +639,7 @@
       "resources/js/Pages/Welcome.vue"
     ],
     "css": [
-      "assets/app-C7g_bSnT.css"
+      "assets/app-IHuJN6wc.css"
     ]
   }
 }
