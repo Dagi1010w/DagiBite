@@ -5,11 +5,10 @@ WORKDIR /app
 # Copy only composer files for caching
 COPY composer.json composer.lock ./
 
-# Install dependencies using Railway-compatible cache
-RUN --mount=type=cache,id=cache=composer,target=/tmp/cache \
-    COMPOSER_CACHE_DIR=/tmp/cache \
+# Composer dependencies
+RUN --mount=type=cache,id=cache-composer,target=/tmp/composer \
+    COMPOSER_CACHE_DIR=/tmp/composer \
     composer install --prefer-dist --no-interaction --no-dev --optimize-autoloader
-
 # Copy the rest of the application
 COPY . .
 
@@ -20,8 +19,8 @@ WORKDIR /app
 # Copy package files for caching
 COPY package.json package-lock.json ./
 
-# Install npm dependencies using Railway-compatible cache
-RUN --mount=type=cache,id=cache=npm,target=/root/.npm \
+# Node dependencies
+RUN --mount=type=cache,id=cache-npm,target=/root/.npm \
     npm install
 
 # Copy the rest of the app
