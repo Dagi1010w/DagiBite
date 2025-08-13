@@ -31,13 +31,13 @@ COPY package*.json ./
 RUN npm ci
 
 # =========================
-# Stage 3 - Final image with PHP-FPM + Nginx
+# Stage 3 - Final runtime image
 # =========================
 FROM php:8.2-fpm
 
-# Install Nginx & PHP extensions
+# Install required PHP extensions
 RUN apt-get update && apt-get install -y \
-    nginx libpng-dev libjpeg-dev libfreetype6-dev \
+    libpng-dev libjpeg-dev libfreetype6-dev \
     libonig-dev libzip-dev zip curl ca-certificates \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd mbstring zip pdo pdo_mysql bcmath exif pcntl \
@@ -55,15 +55,12 @@ WORKDIR /var/www
 # Copy Laravel application
 COPY . .
 
-# Remove existing storage link & recreate at runtime
+# Remove existing storage link & set permissions
 RUN rm -rf public/storage && mkdir -p /var/www/storage \
     && chown -R www-data:www-data /var/www
 
-# Configure Nginx
-RUN rm /etc/nginx/sites-enabled/default
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-
+# Expose Railway's port
 EXPOSE 80
+
+# Start Laravel using artisan serve so it listens on Railway's assigned $PORT
 CMD php artisan storage:link && php artisan serve --host=0.0.0.0 --port=${PORT}
-
-
