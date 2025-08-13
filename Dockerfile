@@ -1,46 +1,68 @@
-FROM php:8.2-fpm
+# =========================
+# Stage 1 - PHP dependencies
+# =========================
+FROM php:8.2-fpm AS php-deps
 
-# Install system dependencies & PHP extensions
+# Install system deps & PHP extensions
 RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libonig-dev \
-    libzip-dev \
-    zip \
-    curl \
-    ca-certificates \
-    gnupg \
+    git unzip libpng-dev libjpeg-dev libfreetype6-dev \
+    libonig-dev libzip-dev zip curl ca-certificates \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd mbstring zip pdo pdo_mysql \
+    && docker-php-ext-install gd mbstring zip pdo pdo_mysql bcmath exif pcntl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer from official image
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Install Node.js v18 directly from Debian repos
-RUN apt-get update && apt-get install -y nodejs npm \
-    && npm install -g npm@latest
-
-# Set working directory
 WORKDIR /app
 
-# Copy composer files first
+# Copy composer files and install PHP deps
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --prefer-dist --no-interaction --ignore-platform-reqs
+RUN composer install --no-dev --prefer-dist --no-interaction --ignore-platform-reqs --no-scripts
 
-# Copy package files and install Node.js dependencies
+# =========================
+# Stage 2 - Node dependencies
+# =========================
+FROM node:18 AS node-deps
+
+WORKDIR /app
+
+# Copy package files and install Node deps
 COPY package*.json ./
 RUN npm ci
 
-# Copy rest of the application
+# =========================
+# Stage 3 - Final image
+# =========================
+FROM php:8.2-fpm
+
+# Install system deps & PHP extensions
+RUN apt-get update && apt-get install -y \
+    libpng-dev libjpeg-dev libfreetype6-dev \
+    libonig-dev libzip-dev zip curl ca-certificates \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd mbstring zip pdo pdo_mysql bcmath exif pcntl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy Composer from php-deps stage
+COPY --from=php-deps /usr/bin/composer /usr/bin/composer
+COPY --from=php-deps /app/vendor /app/vendor
+
+# Copy Node modules from node-deps stage
+COPY --from=node-deps /app/node_modules /app/node_modules
+
+WORKDIR /app
+
+# Copy the rest of the app source
 COPY . .
 
-# Create required directories for nginx (if using it)
+# Ignore Laravel's storage symlink in builds (handled at runtime)
+RUN rm -rf public/storage
+
+# Create required dirs for nginx (optional)
 RUN mkdir -p /var/log/nginx && mkdir -p /var/cache/nginx
 
-EXPOSE 9000
+# Run storage link at container startup
+CMD php artisan storage:link && php-fpm
 
-CMD ["php-fpm"]
+EXPOSE 9000
