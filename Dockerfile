@@ -5,7 +5,7 @@ WORKDIR /app
 # Copy composer files first (for caching)
 COPY composer.json composer.lock ./
 
-# Use cache mount with Railway-compatible ID
+# Composer cache
 RUN --mount=type=cache,id=cache-composer,target=/tmp/cache \
     COMPOSER_CACHE_DIR=/tmp/cache \
     composer install --prefer-dist --no-interaction --no-dev --optimize-autoloader
@@ -20,7 +20,7 @@ WORKDIR /app
 # Copy package files first (for caching)
 COPY package.json package-lock.json ./
 
-# Use cache mount with Railway-compatible ID
+# NPM cache
 RUN --mount=type=cache,id=cache-npm,target=/root/.npm \
     npm install
 
