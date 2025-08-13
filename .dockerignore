@@ -1,34 +1,7 @@
-vendor/
-node_modules/
-public/storage
-# Ignore Laravel caches
-bootstrap/cache/*
-storage/*.key
-storage/logs/*
-storage/framework/sessions/*
-storage/framework/views/*
-storage/framework/cache/*
-
-# Node
 node_modules
-npm-debug.log
-yarn-error.log
-
-# Vendor folder (handled in Dockerfile)
 vendor
-
-# Git
+storage
+*.log
 .git
 .gitignore
-
-# Docker files
-Dockerfile
-docker-compose.yml
-
-# Environment
 .env
-.env.*
-
-# OS files
-.DS_Store
-Thumbs.db
