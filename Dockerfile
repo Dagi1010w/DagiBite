@@ -11,10 +11,10 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install gd mbstring zip pdo pdo_mysql bcmath exif pcntl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Composer from official image
+# Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /app
+WORKDIR /var/www
 
 # Copy composer files and install PHP deps
 COPY composer.json composer.lock ./
@@ -27,42 +27,48 @@ FROM node:18 AS node-deps
 
 WORKDIR /app
 
-# Copy package files and install Node deps
 COPY package*.json ./
 RUN npm ci
 
 # =========================
-# Stage 3 - Final image
+# Stage 3 - Final image with PHP-FPM + Nginx
 # =========================
 FROM php:8.2-fpm
 
-# Install system deps & PHP extensions
+# Install Nginx & PHP extensions
 RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev \
+    nginx libpng-dev libjpeg-dev libfreetype6-dev \
     libonig-dev libzip-dev zip curl ca-certificates \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd mbstring zip pdo pdo_mysql bcmath exif pcntl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy Composer from php-deps stage
+# Copy Composer & vendor files
 COPY --from=php-deps /usr/bin/composer /usr/bin/composer
-COPY --from=php-deps /app/vendor /app/vendor
+COPY --from=php-deps /var/www/vendor /var/www/vendor
 
-# Copy Node modules from node-deps stage
-COPY --from=node-deps /app/node_modules /app/node_modules
+# Copy Node modules
+COPY --from=node-deps /app/node_modules /var/www/node_modules
 
-WORKDIR /app
+WORKDIR /var/www
 
-# Copy the rest of the app source
+# Copy Laravel application
 COPY . .
 
-# Ignore Laravel's storage symlink in builds (handled at runtime)
-RUN rm -rf public/storage
+# Remove existing storage link & recreate at runtime
+RUN rm -rf public/storage && mkdir -p /var/www/storage \
+    && chown -R www-data:www-data /var/www
 
-# Create required dirs for nginx (optional)
-RUN mkdir -p /var/log/nginx && mkdir -p /var/cache/nginx
+# Configure Nginx
+RUN rm /etc/nginx/sites-enabled/default
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Run storage link at container startup
-CMD php artisan storage:link && php-fpm
+# Expose HTTP port
+EXPOSE 80
 
-EXPOSE 9000
+# Start Nginx & PHP-FPM together
+CMD php artisan storage:link && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    service nginx start && \
+    php-fpm
