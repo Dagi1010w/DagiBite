@@ -1,37 +1,45 @@
-# Stage 1: PHP dependencies
+# ---------------------------
+# Stage 1: Composer dependencies
+# ---------------------------
 FROM composer:2 AS composer-deps
 WORKDIR /app
 
-# Copy composer files first (for caching)
+# Copy composer files first for caching
 COPY composer.json composer.lock ./
 
-# Composer cache
-RUN --mount=type=cache,id=cache-composer,target=/tmp/cache \
+# Use Railway-compatible cache mount
+RUN --mount=type=cache,id=cachecomposer,target=/tmp/cache \
     COMPOSER_CACHE_DIR=/tmp/cache \
     composer install --prefer-dist --no-interaction --no-dev --optimize-autoloader
 
-# Copy rest of the application
+# Copy the rest of the backend
 COPY . .
 
+# ---------------------------
 # Stage 2: Node dependencies
+# ---------------------------
 FROM node:18 AS node-deps
 WORKDIR /app
 
-# Copy package files first (for caching)
+# Copy package files first for caching
 COPY package.json package-lock.json ./
 
-# NPM cache
-RUN --mount=type=cache,id=cache-npm,target=/root/.npm \
+# Railway-compatible NPM cache
+RUN --mount=type=cache,id=cachenpm,target=/root/.npm \
     npm install
 
-# Copy rest of the application
+# Copy the rest of the frontend code
 COPY . .
+
+# Build frontend assets
 RUN npm run build
 
-# Stage 3: Production container
+# ---------------------------
+# Stage 3: Production PHP container
+# ---------------------------
 FROM php:8.2-fpm
 
-# Install PHP extensions & Nginx
+# Install PHP extensions & system dependencies
 RUN apt-get update && apt-get install -y \
     nginx libpng-dev libjpeg-dev libfreetype6-dev zip git unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -40,7 +48,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www
 
-# Copy backend code & vendor
+# Copy backend + vendor
 COPY --from=composer-deps /app/vendor ./vendor
 COPY --from=composer-deps /app/composer.json ./composer.json
 COPY --from=composer-deps /app/composer.lock ./composer.lock
@@ -51,17 +59,15 @@ COPY --from=composer-deps /app/app ./app
 COPY --from=composer-deps /app/database ./database
 COPY --from=composer-deps /app/resources ./resources
 COPY --from=composer-deps /app/bootstrap ./bootstrap
-
-# Copy built frontend assets
 COPY --from=node-deps /app/public ./public
 
-# Set permissions
+# Set proper permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 # Configure Nginx
 COPY docker/nginx.conf /etc/nginx/sites-available/default
 
-# Start script for Nginx + PHP-FPM
+# Start script
 COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
 
