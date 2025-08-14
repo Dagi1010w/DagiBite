@@ -48,19 +48,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && docker-php-ext-install -j$(nproc) pdo_mysql zip bcmath intl gd opcache \
   && rm -rf /var/lib/apt/lists/*
 
-# PHP production tuning
+# PHP production tuning (fixed line breaks for Railway)
 RUN printf "%s" "\
-memory_limit=256M
-upload_max_filesize=32M
-post_max_size=32M
-expose_php=0
-opcache.enable=1
-opcache.enable_cli=1
-opcache.jit=off
-opcache.validate_timestamps=0
-opcache.max_accelerated_files=20000
-opcache.revalidate_freq=0
-" > $PHP_INI_DIR/conf.d/zz-prod.ini
+memory_limit=256M\n\
+upload_max_filesize=32M\n\
+post_max_size=32M\n\
+expose_php=0\n\
+opcache.enable=1\n\
+opcache.enable_cli=1\n\
+opcache.jit=off\n\
+opcache.validate_timestamps=0\n\
+opcache.max_accelerated_files=20000\n\
+opcache.revalidate_freq=0\n" > $PHP_INI_DIR/conf.d/zz-prod.ini
 
 WORKDIR /var/www
 
@@ -82,7 +81,7 @@ RUN chmod +x /start.sh
 RUN chown -R www-data:www-data storage bootstrap/cache \
  && chmod -R ug+rwx storage bootstrap/cache
 
-# Cloud Run best practice: listen on 8080
+# Cloud Run / Railway best practice: listen on 8080
 ENV PORT=8080
 EXPOSE 8080
 
