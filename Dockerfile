@@ -40,8 +40,8 @@ RUN npm ci
 # Copy the rest of the application
 COPY . .
 
-# Create required directories for nginx (if using it inside container)
-RUN mkdir -p /var/log/nginx && mkdir -p /var/cache/nginx
+# Set permissions for storage and bootstrap/cache
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 
 # Expose port (default PHP-FPM is 9000, change if needed)
 EXPOSE 9000
