@@ -1,6 +1,9 @@
 # ---------- Base PHP image ----------
 FROM php:8.2-fpm
 
+# Set the DEBIAN_FRONTEND variable to noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Install system dependencies & PHP extensions
 RUN apt-get update && apt-get install -y \
     git \
@@ -19,16 +22,16 @@ RUN apt-get update && apt-get install -y \
 # Install Composer from official image
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Install Node.js (v18 LTS) & npm
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+# Install Node.js (v20 LTS) & npm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && npm install -g npm@latest
 
 # Set working directory
 WORKDIR /app
 
-# Copy only composer files first for caching
-COPY composer.json composer.lock ./
+# Copy the entire application first
+COPY . .
 
 # Install PHP dependencies without platform checks
 RUN composer install --no-dev --prefer-dist --no-interaction --ignore-platform-reqs
@@ -36,9 +39,6 @@ RUN composer install --no-dev --prefer-dist --no-interaction --ignore-platform-r
 # Copy package files and install Node.js dependencies
 COPY package*.json ./
 RUN npm ci
-
-# Copy the rest of the application
-COPY . .
 
 # Set permissions for storage and bootstrap/cache
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
