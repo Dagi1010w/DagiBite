@@ -1,71 +1,93 @@
+# =========================
 # Stage 1: PHP dependencies
-FROM composer:2 AS composer-deps
+# =========================
+FROM composer:2 AS vendor
 WORKDIR /app
 
-# Copy only composer files for caching
+# Copy only composer files first (better layer caching)
 COPY composer.json composer.lock ./
 
-# Composer dependencies
-RUN --mount=type=cache,id=cache-composer,target=/tmp/composer \
-    COMPOSER_CACHE_DIR=/tmp/composer \
-    composer install --prefer-dist --no-interaction --no-dev --optimize-autoloader
-# Copy the rest of the application
-COPY . .
+# Install production deps (no cache mounts)
+RUN composer install --no-dev --prefer-dist --no-ansi --no-interaction --no-progress
 
-# Stage 2: Node dependencies & build
-FROM node:18 AS node-deps
+# Copy the rest of the app (so we can optimize autoload)
+COPY . .
+RUN composer dump-autoload -o --no-ansi
+
+# =====================================
+# Stage 2: Frontend (Vite) build output
+# =====================================
+FROM node:20 AS frontend
 WORKDIR /app
 
-# Copy package files for caching
-COPY package.json package-lock.json ./
+# Copy package files first for caching
+COPY package.json ./
+COPY package-lock.json* ./
+COPY yarn.lock* ./
+COPY pnpm-lock.yaml* ./
 
-# Node dependencies
-RUN --mount=type=cache,id=cache-npm,target=/root/.npm \
-    npm install
+# Install deps (auto-pick npm/yarn/pnpm)
+RUN if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; \
+    elif [ -f yarn.lock ]; then corepack enable && yarn install --frozen-lockfile; \
+    elif [ -f pnpm-lock.yaml ]; then corepack enable && pnpm install --frozen-lockfile; \
+    else npm install --no-audit --no-fund; fi
 
-# Copy the rest of the app
+# Build
 COPY . .
-
-# Build frontend assets
 RUN npm run build
 
-# Stage 3: Production container
-FROM php:8.2-fpm
+# ==========================================
+# Stage 3: Production (Nginx + PHP 8.3 FPM)
+# ==========================================
+FROM php:8.3-fpm
 
-# Install PHP extensions & Nginx
-RUN apt-get update && apt-get install -y \
-    nginx libpng-dev libjpeg-dev libfreetype6-dev zip git unzip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql gd \
-    && rm -rf /var/lib/apt/lists/*
+# System packages & PHP extensions commonly needed by Laravel
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      nginx git unzip libzip-dev libicu-dev libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev \
+  && docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-install -j$(nproc) pdo_mysql zip bcmath intl gd opcache \
+  && rm -rf /var/lib/apt/lists/*
+
+# PHP production tuning
+RUN printf "%s" "\
+memory_limit=256M
+upload_max_filesize=32M
+post_max_size=32M
+expose_php=0
+opcache.enable=1
+opcache.enable_cli=1
+opcache.jit=off
+opcache.validate_timestamps=0
+opcache.max_accelerated_files=20000
+opcache.revalidate_freq=0
+" > $PHP_INI_DIR/conf.d/zz-prod.ini
 
 WORKDIR /var/www
 
-# Copy backend code & vendor
-COPY --from=composer-deps /app/vendor ./vendor
-COPY --from=composer-deps /app/composer.json ./composer.json
-COPY --from=composer-deps /app/composer.lock ./composer.lock
-COPY --from=composer-deps /app/artisan ./artisan
-COPY --from=composer-deps /app/config ./config
-COPY --from=composer-deps /app/routes ./routes
-COPY --from=composer-deps /app/app ./app
-COPY --from=composer-deps /app/database ./database
-COPY --from=composer-deps /app/resources ./resources
-COPY --from=composer-deps /app/bootstrap ./bootstrap
-COPY --from=composer-deps /app/public ./public
+# Copy application code (everything) first
+COPY . .
 
-# Copy built frontend assets
-COPY --from=node-deps /app/public ./public
+# Overwrite with production vendor + built assets from previous stages
+COPY --from=vendor   /app/vendor            ./vendor
+COPY --from=vendor   /app/composer.json     ./composer.json
+COPY --from=vendor   /app/composer.lock     ./composer.lock
+COPY --from=frontend /app/public/build      ./public/build
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
-
-# Configure Nginx
-COPY docker/nginx.conf /etc/nginx/sites-available/default
-
-# Start script for Nginx + PHP-FPM
+# Nginx config & startup script
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
 
-EXPOSE 80
+# Laravel writable dirs
+RUN chown -R www-data:www-data storage bootstrap/cache \
+ && chmod -R ug+rwx storage bootstrap/cache
+
+# Cloud Run best practice: listen on 8080
+ENV PORT=8080
+EXPOSE 8080
+
+# Run small caches on container boot (won't fail the container if not ready)
+ENV APP_ENV=production \
+    LOG_CHANNEL=stderr
+
 CMD ["/start.sh"]
