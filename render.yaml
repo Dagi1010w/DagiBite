@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: laravel12-inertia
+    env: docker
+    plan: free
+    region: oregon   # or your nearest region
+    # Docker build is automatic; no build/start commands required for Docker
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://laravel12-inertia.onrender.com
+      - key: APP_KEY
+        sync: false     # set via dashboard
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DATABASE_URL
+        fromDatabase:
+          name: laravel-db
+          property: connectionString
+      - key: SESSION_DRIVER
+        value: cookie
+      - key: CACHE_DRIVER
+        value: file
+
+databases:
+  - name: laravel-db
+    plan: free
