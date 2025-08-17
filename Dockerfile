@@ -10,7 +10,6 @@ COPY app/ ./app/
 COPY routes/ ./routes/
 
 # Install production dependencies
-# Now safe: artisan + bootstrap + app + routes exist
 RUN composer install --no-dev --prefer-dist --no-progress --no-interaction
 
 # Optimize autoloader
@@ -41,17 +40,17 @@ FROM richarvey/nginx-php-fpm:latest
 ENV WEBROOT=/var/www/html/public
 WORKDIR /var/www/html
 
-# Copy the entire app from the vendor stage (includes vendor/, config, routes, etc.)
+# Copy the entire app from the vendor stage
 COPY --from=vendor /app /var/www/html
 
 # Copy only the built assets from the assets stage
 COPY --from=assets /app/public/build ./public/build
 
-# Fix permissions for Laravel writable directories
-RUN chown -R www-www-data storage bootstrap/cache \
+# Fix permissions: Use correct user 'www-data', not 'www-www-data'
+RUN chown -R www-data:www-data storage bootstrap/cache \
  && chmod -R 775 storage bootstrap/cache
 
 # Ensure logs directory is writable
 RUN mkdir -p storage/logs \
- && chown -R www-www-data storage/logs \
+ && chown -R www-data:www-data storage/logs \
  && chmod -R 775 storage/logs
