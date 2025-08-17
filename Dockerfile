@@ -11,6 +11,7 @@ COPY routes/ ./routes/
 RUN composer install --no-dev --prefer-dist --no-progress --no-interaction
 RUN composer dump-autoload --optimize
 
+
 # --- STAGE 2: Build frontend assets ---
 FROM node:20-alpine AS assets
 WORKDIR /app
@@ -20,33 +21,37 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# --- STAGE 3: Final runtime image ---
-FROM richarvey/nginx-php-fpm:latest
 
-ENV WEBROOT=/var/www/html/public
-WORKDIR /var/www/html
+# --- STAGE 3: Final runtime with PHP 8.2 + Apache ---
+FROM php:8.2-apache
 
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    zip \
+    unzip \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Enable Apache mods
+RUN a2enmod rewrite
+
+# Configure Apache
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf \
+ && sed -ri -e 's!/var/www!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# Copy app
 COPY --from=assets /app /var/www/html
-COPY --from=assets /app/public/build ./public/build
 
-# ✅ Fix permissions with CORRECT user
-RUN mkdir -p \
-    storage/framework/cache \
-    storage/framework/sessions \
-    storage/framework/views \
-    storage/logs \
-    bootstrap/cache \
- && chown -R www-www-data storage \
- && chmod -R 775 storage \
- && chown -R www-www-data bootstrap/cache \
- && chmod -R 775 bootstrap/cache
+# Ensure storage and cache dirs exist and are writable
+RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
+ && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+ && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Ensure logs are writable
-RUN chown -R www-www-data storage/logs \
- && chmod -R 775 storage/logs
-
-# ✅ Start app: migrate, start services
-CMD sh -c "php artisan migrate --force && \
-           service nginx start && \
-           service php-fpm start && \
-           tail -f storage/logs/laravel.log"
+# Run migrations and start Apache
+CMD php /var/www/html/artisan migrate --force && \
+    apache2-foreground
