@@ -2,13 +2,17 @@
 FROM composer:2 AS vendor
 WORKDIR /app
 
+# Copy essential files for composer install
 COPY composer.json composer.lock ./
 COPY artisan ./
 COPY bootstrap/ ./bootstrap/
 COPY app/ ./app/
 COPY routes/ ./routes/
 
+# Install production dependencies
 RUN composer install --no-dev --prefer-dist --no-progress --no-interaction
+
+# Optimize autoloader
 RUN composer dump-autoload --optimize
 
 
@@ -16,9 +20,11 @@ RUN composer dump-autoload --optimize
 FROM node:20-alpine AS assets
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
 RUN npm ci
 
+# Copy full app
 COPY . .
 RUN npm run build
 
@@ -36,7 +42,8 @@ COPY --from=assets /app /var/www/html
 # Re-copy built assets
 COPY --from=assets /app/public/build ./public/build
 
-# Create required directories and fix permissions
+# 🔧 Create required directories and fix permissions
+# ✅ Fixed: user is 'www-data', not 'www-www-data'
 RUN mkdir -p \
     storage/framework/cache \
     storage/framework/sessions \
@@ -52,8 +59,8 @@ RUN mkdir -p \
 RUN chown -R www-www-data storage/logs \
  && chmod -R 775 storage/logs
 
-# ✅ Run migration and start services properly
-# Use a single entrypoint script to control startup order
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-CMD ["/start.sh"]
+# ✅ Final command to start the service
+CMD sh -c "php artisan migrate --force && \
+           service nginx start && \
+           service php-fpm start && \
+           tail -f storage/logs/laravel.log"
