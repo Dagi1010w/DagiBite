@@ -19,7 +19,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-# Copy full app
 COPY . .
 RUN npm run build
 
@@ -33,10 +32,18 @@ WORKDIR /var/www/html
 # Copy full app from assets stage (has everything)
 COPY --from=assets /app /var/www/html
 
-# Re-copy only the built assets (optional, but ensures latest)
+# Re-copy built assets
 COPY --from=assets /app/public/build ./public/build
 
-# Ensure directories exist and set permissions
-RUN mkdir -p storage bootstrap/cache storage/logs \
- && chown -R www-data:www-data storage bootstrap/cache storage/logs \
- && chmod -R 775 storage bootstrap/cache storage/logs
+# 🔧 Create required directories and fix permissions
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    bootstrap/cache \
+ && chown -R www-www-data storage bootstrap/cache \
+ && chmod -R 775 storage bootstrap/cache
+
+# Optional: Clear compiled files
+RUN cd /var/www/html && php artisan clear-compiled || true
