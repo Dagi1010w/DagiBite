@@ -43,7 +43,6 @@ COPY --from=assets /app /var/www/html
 COPY --from=assets /app/public/build ./public/build
 
 # 🔧 Create required directories and fix permissions
-# ✅ Fixed: user is 'www-data', not 'www-www-data'
 RUN mkdir -p \
     storage/framework/cache \
     storage/framework/sessions \
@@ -53,6 +52,9 @@ RUN mkdir -p \
  && chown -R www-data:www-data storage bootstrap/cache \
  && chmod -R 775 storage bootstrap/cache
 
-# Optional: Ensure logs are writable
+# Ensure logs are writable
 RUN chown -R www-data:www-data storage/logs \
  && chmod -R 775 storage/logs
+
+# Optional: Verify artisan exists
+RUN ls -la /var/www/html/artisan || echo "ERROR: artisan not found!"
