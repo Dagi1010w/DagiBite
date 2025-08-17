@@ -2,13 +2,15 @@
 FROM composer:2 AS vendor
 WORKDIR /app
 
-# Copy essential files for composer install
+# Copy essential files for composer install to succeed
 COPY composer.json composer.lock ./
 COPY artisan ./
 COPY bootstrap/ ./bootstrap/
+COPY app/ ./app/
+COPY routes/ ./routes/
 
 # Install production dependencies
-# This will now run `package:discover` safely because bootstrap/app.php exists
+# Now safe: artisan + bootstrap + app + routes exist
 RUN composer install --no-dev --prefer-dist --no-progress --no-interaction
 
 # Optimize autoloader
@@ -25,7 +27,7 @@ COPY package*.json ./
 # Install Node.js dependencies
 RUN npm ci
 
-# Copy full app (including resources, js, css, etc.)
+# Copy full app (including resources, config, etc.)
 COPY . .
 
 # Build frontend assets using Vite
@@ -39,13 +41,13 @@ FROM richarvey/nginx-php-fpm:latest
 ENV WEBROOT=/var/www/html/public
 WORKDIR /var/www/html
 
-# Copy the entire app from the vendor stage (includes vendor/, artisan, bootstrap/, etc.)
+# Copy the entire app from the vendor stage (includes vendor/, config, routes, etc.)
 COPY --from=vendor /app /var/www/html
 
 # Copy only the built assets from the assets stage
 COPY --from=assets /app/public/build ./public/build
 
-# Fix permissions for Laravel storage and cache
+# Fix permissions for Laravel writable directories
 RUN chown -R www-www-data storage bootstrap/cache \
  && chmod -R 775 storage bootstrap/cache
 
