@@ -2,17 +2,13 @@
 FROM composer:2 AS vendor
 WORKDIR /app
 
-# Copy essential files for composer install
 COPY composer.json composer.lock ./
 COPY artisan ./
 COPY bootstrap/ ./bootstrap/
 COPY app/ ./app/
 COPY routes/ ./routes/
 
-# Install production dependencies
 RUN composer install --no-dev --prefer-dist --no-progress --no-interaction
-
-# Optimize autoloader
 RUN composer dump-autoload --optimize
 
 
@@ -20,19 +16,16 @@ RUN composer dump-autoload --optimize
 FROM node:20-alpine AS assets
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
 RUN npm ci
-
-# Copy full app
 COPY . .
 RUN npm run build
 
 
-# --- STAGE 3: Final runtime with PHP 8.2 + Apache ---
+# --- STAGE 3: Final runtime with PHP 8.2 + Apache + PostgreSQL support ---
 FROM php:8.2-apache
 
-# Install system dependencies
+# Install system dependencies including PostgreSQL client and PHP extensions
 RUN apt-get update && apt-get install -y \
     git \
     zip \
@@ -41,7 +34,11 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     curl \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Install PHP PostgreSQL extension
+RUN docker-php-ext-install pdo pdo_pgsql pgsql
 
 # Enable Apache mods
 RUN a2enmod rewrite
@@ -51,15 +48,15 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf \
  && sed -ri -e 's!/var/www!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# ✅ Copy full app from assets stage (has everything except vendor)
+# Copy full app from assets stage
 COPY --from=assets /app /var/www/html
 
-# ✅ Copy vendor directory from vendor stage
+# Copy vendor directory from vendor stage
 COPY --from=vendor /app/vendor /var/www/html/vendor
 
 # Ensure storage and cache dirs exist and are writable
 RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
- && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+ && chown -R www-www-data /var/www/html/storage /var/www/html/bootstrap/cache \
  && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Run migrations and start Apache
