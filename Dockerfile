@@ -43,7 +43,7 @@ COPY --from=assets /app /var/www/html
 COPY --from=assets /app/public/build ./public/build
 
 # 🔧 Create required directories and fix permissions
-# ✅ CORRECT: user is 'www-www-data'
+# ✅ CORRECT: user is 'www-www-data' (not www-www-data)
 RUN mkdir -p \
     storage/framework/cache \
     storage/framework/sessions \
