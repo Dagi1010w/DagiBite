@@ -1,3 +1,5 @@
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 import '../css/app.css';
 import './bootstrap';
 
