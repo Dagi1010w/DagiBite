@@ -33,7 +33,7 @@ WORKDIR /var/www/html
 # Copy full app from assets stage
 COPY --from=assets /app /var/www/html
 
-# Re-copy built assets (ensures latest)
+# Re-copy built assets
 COPY --from=assets /app/public/build ./public/build
 
 # Create required directories and fix permissions
@@ -43,16 +43,17 @@ RUN mkdir -p \
     storage/framework/views \
     storage/logs \
     bootstrap/cache \
- && chown -R www-www-data storage bootstrap/cache \
- && chmod -R 775 storage bootstrap/cache
+ && chown -R www-www-data storage \
+ && chmod -R 775 storage \
+ && chown -R www-www-data bootstrap/cache \
+ && chmod -R 775 bootstrap/cache
 
 # Ensure logs are writable
 RUN chown -R www-www-data storage/logs \
  && chmod -R 775 storage/logs
 
-# ✅ Final Step: Define CMD to run on startup
-# Run migration, start services, and tail logs
-CMD sh -c "php artisan migrate --force && \
-           service nginx start && \
-           service php-fpm start && \
-           tail -f storage/logs/laravel.log"
+# ✅ Run migration and start services properly
+# Use a single entrypoint script to control startup order
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+CMD ["/start.sh"]

@@ -144,7 +144,7 @@ Route::get('/restaurants/{slug}/menu', [MenuController::class, 'customerMenu'])-
 Route::get('/restaurants/{slug}', [RestaurantController::class, 'show'])->name('restaurants.show');
 
 
-
+Route::get('/health', fn() => response()->json(['status' => 'OK']));
 
 
 require __DIR__ . '/auth.php';
