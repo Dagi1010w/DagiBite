@@ -2,13 +2,17 @@
 FROM composer:2 AS vendor
 WORKDIR /app
 
+# Copy essential files for composer install
 COPY composer.json composer.lock ./
 COPY artisan ./
 COPY bootstrap/ ./bootstrap/
 COPY app/ ./app/
 COPY routes/ ./routes/
 
+# Install production dependencies
 RUN composer install --no-dev --prefer-dist --no-progress --no-interaction
+
+# Optimize autoloader
 RUN composer dump-autoload --optimize
 
 
@@ -16,9 +20,11 @@ RUN composer dump-autoload --optimize
 FROM node:20-alpine AS assets
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
 RUN npm ci
 
+# Copy full app
 COPY . .
 RUN npm run build
 
@@ -26,24 +32,27 @@ RUN npm run build
 # --- STAGE 3: Final runtime image ---
 FROM richarvey/nginx-php-fpm:latest
 
+# Set document root
 ENV WEBROOT=/var/www/html/public
 WORKDIR /var/www/html
 
-# Copy full app from assets stage (has everything)
+# Copy full app from assets stage
 COPY --from=assets /app /var/www/html
 
-# Re-copy built assets
+# Re-copy built assets (ensures latest)
 COPY --from=assets /app/public/build ./public/build
 
 # 🔧 Create required directories and fix permissions
+# ✅ Fixed: user is 'www-data', not 'www-www-data'
 RUN mkdir -p \
     storage/framework/cache \
     storage/framework/sessions \
     storage/framework/views \
     storage/logs \
     bootstrap/cache \
- && chown -R www-www-data storage bootstrap/cache \
+ && chown -R www-data:www-data storage bootstrap/cache \
  && chmod -R 775 storage bootstrap/cache
 
-# Optional: Clear compiled files
-RUN cd /var/www/html && php artisan clear-compiled || true
+# Optional: Ensure logs are writable
+RUN chown -R www-data:www-data storage/logs \
+ && chmod -R 775 storage/logs
