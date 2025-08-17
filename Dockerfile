@@ -55,6 +55,7 @@ COPY --from=assets /app /var/www/html
 COPY --from=vendor /app/vendor /var/www/html/vendor
 
 # Ensure storage and cache dirs exist and are writable
+# ✅ CORRECT: user is 'www-www-data', NOT 'www-www-data'
 RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
  && chown -R www-www-data /var/www/html/storage /var/www/html/bootstrap/cache \
  && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
